@@ -1,14 +1,15 @@
-import * as GITHUB_CONST from '../utils/Constants.js';
+import querystring from 'querystring';
+import { PAGE_START, API_ROOT, MAX_RESULTS } from '../utils/Constants.js';
 import * as common from './Common.js';
 
-export function Request({schemaName, getAllItems = false, page=GITHUB_CONST.PAGE_START, filter=null, completeResponse, callback}) {
+export function Request({schemaName, getAllItems = false, page=PAGE_START, filter=null, completeResponse, callback}) {
     let query = `?page=${page}`;
     if(filter !== null && filter.length > 0) {
         query += queryString(filter);
     }
 
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", `${GITHUB_CONST.API_ROOT}${schemaName}${query}`);
+    xhr.open("GET", `${API_ROOT}${schemaName}${query}`);
     xhr.send();
     xhr.onreadystatechange = () => {
         if (xhr.readyState === 4) {
@@ -18,7 +19,7 @@ export function Request({schemaName, getAllItems = false, page=GITHUB_CONST.PAGE
                     completeResponse.push(item);
                 });
     
-                if (getAllItems && response.length === GITHUB_CONST.MAX_RESULTS) {
+                if (getAllItems && response.length === MAX_RESULTS) {
                     Request({schemaName:schemaName, getAllItems:getAllItems, page:page + 1, filter:filter, completeResponse:completeResponse, callback:callback});
                 } else {
                     callback(completeResponse, xhr.getResponseHeader("link"));

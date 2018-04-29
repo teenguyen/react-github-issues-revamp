@@ -9,7 +9,7 @@ export default class AuthorFilter extends React.Component {
 
         this.handleResponse = this.handleResponse.bind(this);
         this.state = {
-            authors: []
+            authors: <div>No Authors found.</div>
         }
     }
 
@@ -19,18 +19,15 @@ export default class AuthorFilter extends React.Component {
     }
 
     handleResponse(response) {
-        let authors = []
-        response.forEach((author) => {
-            authors.push({
-                key: author.id,
-                name: author.login,
-                avatar: author.avatar_url
-            });
-        });
+        let authors = response.map(author => ({
+            key: author.id,
+            name: author.login,
+            avatar: author.avatar_url
+        }));
 
-        let authorList = authors.map((item) => 
+        let authorList = authors.map(item => 
             <div key={item.key} onClick={() => this.props.onClick(`creator=${item.name}`)}>
-                <img src={item.avatar} className="icon-square" alt={item.name + "'s avatar"} /> {item.name}
+                <img src={item.avatar} className="icon-square" alt={`${item.name}'s avatar`} /> {item.name}
             </div>
         );
 

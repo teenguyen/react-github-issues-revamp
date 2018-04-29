@@ -9,7 +9,7 @@ export default class AssigneeFilter extends React.Component {
 
         this.handleResponse = this.handleResponse.bind(this);
         this.state = {
-            assignees: []
+            assignees: <div>No Assignees found.</div>
         }
     }
 
@@ -19,16 +19,13 @@ export default class AssigneeFilter extends React.Component {
     }
 
     handleResponse(response) {
-        let assignees = []
-        response.forEach((assignee) => {
-            assignees.push({
-                key: assignee.id,
-                name: assignee.login,
-                avatar: assignee.avatar_url
-            });
-        });
+        let assignees = response.map(assignee => ({
+            key: assignee.id,
+            name: assignee.login,
+            avatar: assignee.avatar_url
+        }));
 
-        let assigneeList = assignees.map((item) => 
+        let assigneeList = assignees.map(item => 
             <div key={item.key} onClick={() => this.props.onClick(`assignee=${item.name}`)}>
                 <img src={item.avatar} className="icon-square" alt={item.name + "'s avatar"}/> {item.name}
             </div>

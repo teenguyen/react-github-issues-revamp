@@ -40,22 +40,19 @@ export default class ResultsTable extends React.Component {
     }
 
     handleResponse(response, linkHeader) {
-        let issues = []
-        response.forEach((issue) => {
-            issues.push({
-                key: issue.id,
-                issueUrl: issue.html_url,
-                state: issue.state,
-                title: issue.title,
-                number: issue.number,
-                createdDate: issue.created_at,
-                user: issue.user.login,
-                userUrl: issue.user.html_url,
-                labels: issue.labels,
-                assignees: issue.assignees,
-                comments: issue.comments
-            });
-        });
+        let issues = response.map(issue => ({
+            key: issue.id,
+            issueUrl: issue.html_url,
+            state: issue.state,
+            title: issue.title,
+            number: issue.number,
+            createdDate: issue.created_at,
+            user: issue.user.login,
+            userUrl: issue.user.html_url,
+            labels: issue.labels,
+            assignees: issue.assignees,
+            comments: issue.comments
+        }));
 
         let issueList = issues.map((item) => 
             <ResultsRow key={item.key} results={item} />

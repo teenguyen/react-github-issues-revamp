@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import * as GITHUB_CONST from './js/utils/Constants.js';
+import { AUTHOR, ASSIGNEE } from './js/utils/Constants.js';
 import * as Common from './js/utils/Common.js';
 
 import StatusBar from './js/containers/StatusBar.jsx';
@@ -25,17 +25,17 @@ export default class App extends Component {
 
     addFilter(newFilter) {
         let existingFilter = false;
-        let newFilterIsCreator = Common.getFilterType(newFilter) === GITHUB_CONST.AUTHOR;
-        let newFilterIsAssignee = Common.getFilterType(newFilter) === GITHUB_CONST.ASSIGNEE;
+        let newFilterIsCreator = Common.getFilterType(newFilter) === AUTHOR;
+        let newFilterIsAssignee = Common.getFilterType(newFilter) === ASSIGNEE;
         let newFilterContainsSort = Common.includesSort(newFilter);
         let currentFilters = this.state.filters;
         for(let i = 0; i < currentFilters.length; i++) {
             if(currentFilters[i] === newFilter) {
                 currentFilters.splice(i, 1);
                 existingFilter = true;
-            } else if (newFilterIsCreator && Common.getFilterType(currentFilters[i]) === GITHUB_CONST.AUTHOR) { // 1 author only
+            } else if (newFilterIsCreator && Common.getFilterType(currentFilters[i]) === AUTHOR) { // 1 author only
                 currentFilters.splice(i, 1);
-            } else if (newFilterIsAssignee && Common.getFilterType(currentFilters[i]) === GITHUB_CONST.ASSIGNEE) { // 1 assignee only
+            } else if (newFilterIsAssignee && Common.getFilterType(currentFilters[i]) === ASSIGNEE) { // 1 assignee only
                 currentFilters.splice(i, 1);
             } else if(newFilterContainsSort && Common.includesSort(currentFilters[i])) {
                 currentFilters.splice(i, 1);

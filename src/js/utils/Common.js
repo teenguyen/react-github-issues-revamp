@@ -1,4 +1,4 @@
-import * as GITHUB_CONST from './Constants.js';
+import { ASC, DESC } from './Constants.js';
 
 export function getFilterType(filter) {
     return filter.substring(0, filter.indexOf("="));
@@ -9,5 +9,5 @@ export function getFilterVal(filter) {
 }
 
 export function includesSort(filter) {
-    return filter.includes(GITHUB_CONST.ASC) || filter.includes(GITHUB_CONST.DESC);
+    return filter.includes(ASC) || filter.includes(DESC);
 }

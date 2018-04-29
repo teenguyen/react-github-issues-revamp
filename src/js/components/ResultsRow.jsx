@@ -25,32 +25,22 @@ export default function ResultsRow(props) {
         // difference divided by milliseconds/seconds/minutes
         let time = Math.round((Date.now() - Date.parse(createdDate))/1000/60/60);
         if (time < 24) {
-            if (time <= 1) {
-                humanisedDate = "less than an hour";
-            } else {
-                humanisedDate = `${time} hours`;
-            }
+            // divided by hours
+            time <= 1 ? humanisedDate = "less than an hour" : humanisedDate = `${time} hours`;
         } else {
             // divided by days
             time = Math.round(time/24);
-            if (time <= 1) {
-                humanisedDate = "a day";
-            } else {
-                humanisedDate = `${time} days`;
-            }
+            time <= 1 ? humanisedDate = "a day" : humanisedDate = `${time} days`;
         }
-    
         return humanisedDate;
     }
     
     function setLabels(labels) {
         let labelList = []
         if (labels.length > 0) {
-            labels.forEach((label, idx) => {
-                labelList.push(
-                    <Label key={idx} name={label.name} color={label.color} />
-                )
-            });
+            labelList = labels.map((label, idx) =>
+                <Label key={idx} name={label.name} color={label.color} />
+            )
         }
     
         return labelList;
@@ -59,13 +49,11 @@ export default function ResultsRow(props) {
     function setAvatars(assignees) {
         let avatarList = [];
         if (assignees.length > 0) {
-            assignees.forEach((assignee, idx) => {
-                avatarList.push(
-                    <a key={idx} href={assignee.html_url}>
-                        <img src={assignee.avatar_url} alt="Assignee's avatar" />
-                    </a>
-                )
-            });
+            avatarList = assignees.map((assignee, idx) => 
+                <a key={idx} href={assignee.html_url}>
+                    <img src={assignee.avatar_url} alt="Assignee's avatar" />
+                </a>
+            )
         }
     
         return avatarList;
@@ -83,7 +71,7 @@ export default function ResultsRow(props) {
                     <a href={props.results.issueUrl}>{props.results.title}</a>
                 </div>
                 <div className="subtext">
-                    #{props.results.number} opened {date} ago by <a href={props.results.userUrl}>{props.results.user}</a>
+                    `#{props.results.number} opened {date} ago by <a href={props.results.userUrl}>{props.results.user}</a>
                 </div>
                 <div>
                     {labels}

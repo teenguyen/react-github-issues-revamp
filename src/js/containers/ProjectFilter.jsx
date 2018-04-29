@@ -6,9 +6,8 @@ export default class ProjectFilter extends React.Component {
     constructor(props) {
         super(props);
 
-        let project = <div>No Projects found. The Projects API is currently under beta testing!</div>
         this.state = {
-            projects: project
+            projects: <div>No Projects found. The Projects API is currently under beta testing!</div>
         }
     }
     

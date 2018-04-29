@@ -9,7 +9,7 @@ export default class LabelFilter extends React.Component {
 
         this.handleResponse = this.handleResponse.bind(this);
         this.state = {
-            labels: []
+            labels: <div>No Labels found.</div>
         }
     }
 
@@ -19,18 +19,15 @@ export default class LabelFilter extends React.Component {
     }
 
     handleResponse(response) {
-        let labels = []
-        response.forEach((label) => {
-            labels.push({
-                key: label.id,
-                name: label.name,
-                color: label.color
-            });
-        });
+        let labels = response.map(label => ({
+            key: label.id,
+            name: label.name,
+            color: label.color
+        }));
 
-        let labelList = labels.map((item) => 
+        let labelList = labels.map(item => 
             <div key={item.key} onClick={() => this.props.onClick(`labels=${item.name}`)}>
-                <img className="icon-square" style={{backgroundColor: `#${item.color}`}}></img> {item.name}
+                <img className="icon-square" style={{backgroundColor: `#${item.color}`}} alt="Label colour"></img> {item.name}
             </div>
         );
 

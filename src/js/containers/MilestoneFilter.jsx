@@ -9,7 +9,7 @@ export default class MilestoneFilter extends React.Component {
 
         this.handleResponse = this.handleResponse.bind(this);
         this.state = {
-            milestones: []
+            milestones: <div>No Milestones found.</div>
         }
     }
 
@@ -19,15 +19,12 @@ export default class MilestoneFilter extends React.Component {
     }
 
     handleResponse(response) {
-        let milestones = []
-        response.forEach((milestone) => {
-            milestones.push({
-                key: milestone.id,
-                name: milestone.title
-            });
-        });
+        let milestones = response.map(milestone => ({
+            key: milestone.id,
+            name: milestone.title
+        }));
 
-        let milestoneList = milestones.map((item) => 
+        let milestoneList = milestones.map(item => 
             <div key={item.key} onClick={() => this.props.onClick(`milestone=${item.name}`)}>
                 {item.name}
             </div>
