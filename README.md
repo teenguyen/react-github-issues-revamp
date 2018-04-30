@@ -1,4 +1,4 @@
-# Front Test
+# React Github Issues Revamp
 
 ## Installation
 
