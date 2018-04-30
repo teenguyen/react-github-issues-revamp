@@ -14,9 +14,9 @@ export const SORT_FILTERS = [
     { type:"updated",                   direction:"desc",   name:"Recently Updated" },
     { type:"updated",                   direction:"asc",    name:"Least Recently Updated" },
     { type:"reactions-+1",              direction:"desc",   name:"👍"},
-    { type:"reactions--1",              direction:"desc",   name:"👎"}, //works?
+    { type:"reactions--1",              direction:"desc",   name:"👎"},
     { type:"reactions-smile",           direction:"desc",   name:"😊"},
     { type:"reactions-tada",            direction:"desc",   name:"🎉"},
-    { type:"reactions-thinking_face",   direction:"desc",   name:"🤔"}, //works?
-    { type:"reactions-heart",           direction:"desc",   name:"❤️"}
+    { type:"reactions-thinking_face",   direction:"desc",   name:"🤔"},
+    { type:"reactions-heart",           direction:"desc",   name:"💗"}
 ]

@@ -9,6 +9,7 @@ export default class ResultsTable extends React.Component {
         super(props);
 
         this.handleResponse = this.handleResponse.bind(this);
+        this.setPagination = this.setPagination.bind(this);
         this.changePage = this.changePage.bind(this);
         this.state = {
             resultsRows: null,
@@ -30,16 +31,22 @@ export default class ResultsTable extends React.Component {
         this.ResultsTable(nextProps)
     }
 
-    ResultsTable(props) {
-        let issues = [];
-        Request({schemaName:"issues", filter:this.props.filters, completeResponse:issues, callback:this.handleResponse});
+    ResultsTable() {
+        Request("issues", this.props.filters)
+        .then(response => {
+            this.handleResponse(response.results);
+            this.setPagination(response.link);
+        });
     }
 
     changePage(newPage) {
-        Paginate(newPage, this.handleResponse);
+        Paginate(newPage)
+        .then(response => {
+            this.handleResponse(response);
+        })
     }
 
-    handleResponse(response, linkHeader) {
+    handleResponse(response) {
         let issues = response.map(issue => ({
             key: issue.id,
             issueUrl: issue.html_url,
@@ -58,6 +65,12 @@ export default class ResultsTable extends React.Component {
             <ResultsRow key={item.key} results={item} />
         );
 
+        this.setState((prevState, props) => ({
+            resultsRows: issueList
+        }));
+    }
+
+    setPagination(link) {
         let root = null;
         let prev = null;
         let next = null;
@@ -65,8 +78,10 @@ export default class ResultsTable extends React.Component {
         let last = null;
         let total = null;
         
-        if (linkHeader !== null) {
-            (linkHeader.split(",")).forEach((link) => {
+        // this check is done here in the event there are no additional pages
+        // the buttons will need to be re-rendered regardless because of the new results
+        if (link) {
+            link.split(",").forEach((link) => {
                 let split = link.split(";");
                 let linkStr = split[0].replace(/[<,>]/g, "").trim()
                 let relStr = split[1].trim();
@@ -84,11 +99,10 @@ export default class ResultsTable extends React.Component {
                     total = parseInt(pageNoStr, 10) || null;
                     root = linkStr.replace(/([&]*)page=([0-9]*)([&]*)/, "");
                 }
-            })
+            });
         }
 
         this.setState((prevState, props) => ({
-            resultsRows: issueList,
             pages: {
                 pageRoot: root,
                 prevPage: prev,

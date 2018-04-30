@@ -71,7 +71,7 @@ export default function ResultsRow(props) {
                     <a href={props.results.issueUrl}>{props.results.title}</a>
                 </div>
                 <div className="subtext">
-                    `#{props.results.number} opened {date} ago by <a href={props.results.userUrl}>{props.results.user}</a>
+                    #{props.results.number} opened {date} ago by <a href={props.results.userUrl}>{props.results.user}</a>
                 </div>
                 <div>
                     {labels}

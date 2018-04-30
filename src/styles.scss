@@ -12,6 +12,7 @@ body {
   background: $cf-blue;
   background: linear-gradient(to bottom left, lighten($cf-blue, 15%), lighten($cf-purple, 15%));
   margin: 5% 10% 10%;
+  min-height: 100vh;
   
   font-family: 'Montserrat', sans-serif;
   color: $black-text;

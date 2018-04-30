@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { AUTHOR, ASSIGNEE } from './js/utils/Constants.js';
-import * as Common from './js/utils/Common.js';
+import * as Utils from './js/utils/Utils.js';
 
 import StatusBar from './js/containers/StatusBar.jsx';
 import Filters from './js/components/Filters.jsx';
@@ -25,19 +25,19 @@ export default class App extends Component {
 
     addFilter(newFilter) {
         let existingFilter = false;
-        let newFilterIsCreator = Common.getFilterType(newFilter) === AUTHOR;
-        let newFilterIsAssignee = Common.getFilterType(newFilter) === ASSIGNEE;
-        let newFilterContainsSort = Common.includesSort(newFilter);
+        let newFilterIsCreator = Utils.getFilterType(newFilter) === AUTHOR;
+        let newFilterIsAssignee = Utils.getFilterType(newFilter) === ASSIGNEE;
+        let newFilterContainsSort = Utils.includesSort(newFilter);
         let currentFilters = this.state.filters;
         for(let i = 0; i < currentFilters.length; i++) {
             if(currentFilters[i] === newFilter) {
                 currentFilters.splice(i, 1);
                 existingFilter = true;
-            } else if (newFilterIsCreator && Common.getFilterType(currentFilters[i]) === AUTHOR) { // 1 author only
+            } else if (newFilterIsCreator && Utils.getFilterType(currentFilters[i]) === AUTHOR) { // 1 author only
                 currentFilters.splice(i, 1);
-            } else if (newFilterIsAssignee && Common.getFilterType(currentFilters[i]) === ASSIGNEE) { // 1 assignee only
+            } else if (newFilterIsAssignee && Utils.getFilterType(currentFilters[i]) === ASSIGNEE) { // 1 assignee only
                 currentFilters.splice(i, 1);
-            } else if(newFilterContainsSort && Common.includesSort(currentFilters[i])) {
+            } else if(newFilterContainsSort && Utils.includesSort(currentFilters[i])) {
                 currentFilters.splice(i, 1);
             }
         }

@@ -2,6 +2,7 @@ body {
   background: #77c4e3;
   background: linear-gradient(to bottom left, #b6e0f0, #afa8d0);
   margin: 5% 10% 10%;
+  min-height: 100vh;
   font-family: 'Montserrat', sans-serif;
   color: #4f4f4f;
   filter: drop-shadow(0 0 10px #8176b5); }

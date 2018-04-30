@@ -1,74 +1,59 @@
+import fetchlink from 'fetch-link';
 import querystring from 'querystring';
-import { PAGE_START, API_ROOT, MAX_RESULTS } from '../utils/Constants.js';
-import * as common from './Common.js';
+import { API_ROOT, PAGE_START } from '../utils/Constants.js';
+import * as Utils from './Utils.js';
 
-export function Request({schemaName, getAllItems = false, page=PAGE_START, filter=null, completeResponse, callback}) {
-    let query = `?page=${page}`;
-    if(filter !== null && filter.length > 0) {
-        query += queryString(filter);
+export function RequestAll(schema) {
+    let results = [];
+    return fetchlink.all(`${API_ROOT}${schema}`, {direction: 'next'})
+    .then(response => {
+        response.forEach(res => {
+            res.json().then(r => {
+                results.push(...(r));
+            });
+        });
+        return results;
+    });
+}
+
+export function Request(schema, filters) {
+    let params = convertParamsToObject(filters);
+    let query = querystring.stringify(params);
+    
+    return fetch(`${API_ROOT}${schema}?${query}`)
+    .then(response => {
+        return response.json().then(r => {
+            return {results: r, link: response.headers.get('link')};
+        });
+    });
+}
+
+export function Paginate(url) {
+    return fetch(url)
+    .then(response => response.json());
+}
+
+function convertParamsToObject(filters) {
+    let params = {
+        page: PAGE_START
+    };
+
+    if (filters) {
+        let labelsFilter = "";
+        filters.forEach(filter => {
+            let filterType = Utils.getFilterType(filter);
+            let filterVal = Utils.getFilterVal(filter);
+            if (filterType === "labels") {
+                labelsFilter += `${filterVal},`;
+            } else {
+                Object.assign(params, {[filterType]: filterVal});
+            }
+        });
+        
+        if(labelsFilter) {
+            Object.assign(params, {labels: labelsFilter});
+        }
     }
 
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", `${API_ROOT}${schemaName}${query}`);
-    xhr.send();
-    xhr.onreadystatechange = () => {
-        if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-                let response = JSON.parse(xhr.responseText);
-                response.forEach((item) => {
-                    completeResponse.push(item);
-                });
-    
-                if (getAllItems && response.length === MAX_RESULTS) {
-                    Request({schemaName:schemaName, getAllItems:getAllItems, page:page + 1, filter:filter, completeResponse:completeResponse, callback:callback});
-                } else {
-                    callback(completeResponse, xhr.getResponseHeader("link"));
-                }
-            }
-        }
-    };
-}
-
-export function Paginate(pagination, callback) {
-    let completeResponse = [];
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", pagination);
-    xhr.send();
-    xhr.onreadystatechange = () => {
-        if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-                let response = JSON.parse(xhr.responseText);
-                response.forEach((item) => {
-                    completeResponse.push(item);
-                });
-                callback(completeResponse, xhr.getResponseHeader("link"));
-            }
-        }
-    };
-}
-
-function queryString(filter) {
-    let labelStr = combineLabels(filter);
-
-    let filterStr = "";
-    filter.forEach((i) => {
-        if(common.getFilterType(i) !== "labels") {
-            filterStr = filterStr.concat(`&${i}`);
-        }
-    });
-    filterStr = filterStr.concat(labelStr);
-    return encodeURI(filterStr.trim());
-}
-
-function combineLabels(filter) {
-    let labelStr = "&labels="
-
-    filter.forEach((i) => {
-        let filterType = common.getFilterType(i);
-        let filterVal = common.getFilterVal(i);
-        if(filterType === "labels") {
-            labelStr = labelStr.concat(`${filterVal},`);
-        }
-    })
-    return labelStr;
+    return params;
 }
