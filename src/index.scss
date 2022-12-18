@@ -1,0 +1,15 @@
+@import "constants.scss";
+
+body {
+  background: $theme-blue;
+  background: linear-gradient(to bottom left, lighten($theme-blue, 15%), lighten($theme-purple, 15%));
+  margin: 10vh 15vw;
+  min-height: 100vh;
+  font-family: 'Montserrat', sans-serif;
+  color: $text-primary;
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}

@@ -1,0 +1,81 @@
+@import "constants.scss";
+
+#app {
+  filter: drop-shadow(0 0 10px $theme-purple);
+
+  header {
+    font-size: 1.5rem;
+    color: $theme-purple;
+    padding: 1rem 2rem;
+    background-color: rgba($background, 0.75);
+    border-radius: 2rem 2rem 0 0;
+  }
+
+  #github-issues {
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+    padding: 1rem 2rem;
+    background-color: $background;
+    border-radius: 0 0 2rem 2rem;
+
+    #table-status {
+      display: flex;
+      gap: 2rem;
+
+      & > span {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+
+        #alert-icon {
+          color: $feather-alert;
+        }
+
+        #check-icon {
+          color: $feather-check;
+        }
+      }
+    }
+
+    #table-filter {
+      display: flex;
+    }
+  }
+}
+
+// #github-issues {
+//   background-color: $table-white;
+//   padding: 15px 25px 30px;
+//   border-radius: 0 0 25px 25px;
+//   .table-filter {
+//     span {
+//       padding: 10px 20px 10px 0;
+//     }
+//   }
+//   .table-contents {
+//     border-spacing: 0;
+//     tr {
+//       &:hover {
+//         background-color: lighten($theme-purple, 35%);
+//       }
+//       td {
+//         padding: 5px;
+//       }
+//       .details {
+//         width: 100%;
+//       }
+//       .subtext {
+//         font-size: 0.8em;
+//       }
+//       .label {
+//         display: inline-block;
+//         padding: 2px;
+//         background-color: $theme-blue;
+//       }
+//       .table-right-align {
+//         text-align: right;
+//       }
+//     }
+//   }
+// }
