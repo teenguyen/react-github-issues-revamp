@@ -1,15 +1,37 @@
-@import "constants.scss";
+@import "./utils/constants.scss";
+
+:root {
+  box-sizing: border-box;
+}
 
 body {
   background: $theme-blue;
-  background: linear-gradient(to bottom left, lighten($theme-blue, 15%), lighten($theme-purple, 15%));
+  background: linear-gradient(
+    to bottom left,
+    lighten($theme-blue, 15%),
+    lighten($theme-purple, 15%)
+  );
   margin: 10vh 15vw;
   min-height: 100vh;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   color: $text-primary;
 }
 
-h1 {
+h1,
+h2,
+button {
   margin: 0;
+  font-family: "Montserrat", sans-serif;
+}
+
+h1 {
   font-size: 1.5rem;
+}
+
+h2 {
+  font-size: 1rem;
+}
+
+button {
+  font-size: 1rem;
 }
