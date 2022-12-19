@@ -1,4 +1,3 @@
-import { JSXElement } from "@babel/types";
 import { AlertTriangle, Check, X, MessageSquare } from "react-feather";
 import { RowProps } from "../utils/types";
 import LabelChip from "./LabelChip";

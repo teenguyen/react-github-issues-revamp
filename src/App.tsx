@@ -7,19 +7,20 @@ import { HEADERS } from "./utils/constants";
 import { RowProps } from "./utils/types";
 import "./App.scss";
 
-export interface AppInterface {
-  data: RowProps[];
+export type AppProps = {
+  data: RowProps[] | null;
   openFilter: string | null;
   setOpenFilter: React.Dispatch<React.SetStateAction<string>>;
-}
+};
 
-export const AppCtx = createContext<AppInterface | null>(null);
+export const AppCtx = createContext<AppProps | null>(null);
 
 const ENDPOINT = "https://api.github.com/repos/Facebook/react/issues";
 
 function App() {
   const [openFilter, setOpenFilter] = useState<string>("");
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<RowProps[]>([]);
+  const [linkHeader, setLinkHeader] = useState<string | null>("");
 
   useEffect(() => {
     (async () => {
@@ -27,14 +28,17 @@ function App() {
         method: "GET",
         headers: HEADERS
       })
-        .then(response => response.json())
+        .then(response => {
+          setLinkHeader(response.headers.get("link"));
+          return response.json();
+        })
         .then(data => {
           setData(data);
         });
     })();
   }, []);
 
-  const appContext: AppInterface = {
+  const appContext: AppProps = {
     data,
     openFilter,
     setOpenFilter
