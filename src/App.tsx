@@ -3,7 +3,13 @@ import Filter from "./components/Filter";
 import Pagination from "./views/Pagination";
 import Table from "./views/Table";
 import TableStatus from "./views/TableStatus";
-import { HEADERS } from "./utils/constants";
+import {
+  ISSUES_ENDPOINT,
+  SEARCH_ENDPOINT,
+  IS_OPEN,
+  IS_CLOSED,
+  FETCH_GET
+} from "./utils/constants";
 import { RowProps } from "./utils/types";
 import "./App.scss";
 
@@ -15,26 +21,31 @@ export type AppProps = {
 
 export const AppCtx = createContext<AppProps | null>(null);
 
-const ENDPOINT = "https://api.github.com/repos/Facebook/react/issues";
-
 function App() {
   const [openFilter, setOpenFilter] = useState<string>("");
-  const [data, setData] = useState<RowProps[]>([]);
+  const [data, setData] = useState<RowProps[] | null>(null);
   const [linkHeader, setLinkHeader] = useState<string | null>("");
+  const [openCount, setOpenCount] = useState<number | string>("?");
+  const [closedCount, setClosedCount] = useState<number | string>("?");
 
   useEffect(() => {
     (async () => {
-      fetch(ENDPOINT, {
-        method: "GET",
-        headers: HEADERS
-      })
-        .then(response => {
-          setLinkHeader(response.headers.get("link"));
-          return response.json();
+      Promise.all([
+        fetch(`${SEARCH_ENDPOINT}${IS_OPEN}`, FETCH_GET).then(resp =>
+          resp.json()
+        ),
+        fetch(`${SEARCH_ENDPOINT}${IS_CLOSED}`, FETCH_GET).then(resp =>
+          resp.json()
+        ),
+        fetch(ISSUES_ENDPOINT, FETCH_GET).then(resp => {
+          setLinkHeader(resp.headers.get("link"));
+          return resp.json();
         })
-        .then(data => {
-          setData(data);
-        });
+      ]).then(([open, closed, data]) => {
+        setOpenCount(open.total_count);
+        setClosedCount(closed.total_count);
+        setData(data);
+      });
     })();
   }, []);
 
@@ -51,7 +62,7 @@ function App() {
           <h1>Github Issues</h1>
         </header>
         <div id="github-issues">
-          <TableStatus />
+          <TableStatus openCount={openCount} closedCount={closedCount} />
 
           <div>
             <h2>Filters:</h2>
@@ -66,7 +77,7 @@ function App() {
           </div>
 
           <Table />
-          <Pagination />
+          <Pagination linkHeader={linkHeader} />
         </div>
       </div>
     </AppCtx.Provider>
