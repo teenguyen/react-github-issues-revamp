@@ -1,36 +1,77 @@
+import { JSXElement } from "@babel/types";
 import { AlertTriangle, Check, X, MessageSquare } from "react-feather";
 import { RowProps } from "../utils/types";
 import LabelChip from "./LabelChip";
 import "./TableRow.scss";
 
 const TableRow = ({ row }: { row: RowProps }) => {
-  const { id, title, number, created_at, state, user, labels } = row;
+  const {
+    id,
+    title,
+    html_url,
+    number,
+    created_at,
+    state,
+    user,
+    labels,
+    // assignees,
+    comments,
+    comments_url
+  } = row;
 
   const stateTd = () => {
-    if (state === "open") return <AlertTriangle />;
-    if (state === "closed") return <Check />;
+    if (state === "open") return <AlertTriangle className="icon-alert" />;
+    if (state === "closed") return <Check className="icon-check" />;
     return <X />;
   };
 
+  const createdAtTd = () => {
+    let humanisedDate = "an unknown time";
+    // difference divided by milliseconds/seconds/minutes
+    let time = Math.round(
+      (Date.now() - Date.parse(created_at)) / 1000 / 60 / 60
+    );
+    if (time < 24) {
+      // divided by hours
+      time <= 1
+        ? (humanisedDate = "less than an hour")
+        : (humanisedDate = `${time} hours`);
+    } else {
+      // divided by days
+      time = Math.round(time / 24);
+      time <= 1 ? (humanisedDate = "a day") : (humanisedDate = `${time} days`);
+    }
+    return `${humanisedDate} ago`;
+  };
+
   return (
-    <tr>
-      <td>{stateTd()}</td>
-      <td className="details">
-        <div>{title}</div>
+    <tr id={id}>
+      <td className="icon-td">{stateTd()}</td>
+      <td className="details-td">
+        <a href={html_url} className="title">
+          {title}
+        </a>
         <div className="subtext">
-          #{number} opened 1 hour ago by {user.login}
+          #{number} opened {createdAtTd()} by{" "}
+          <a href={user.html_url} className="link">
+            {user.login}
+          </a>
         </div>
-        {labels.map(label => <LabelChip label={label} />)}
+        <div className="labels">
+          {labels.map(label => (
+            <LabelChip key={label.name} {...label} />
+          ))}
+        </div>
       </td>
-      <td className="table-right-align">
-        <span className="icon-span">
-          <i data-feather="github"></i>
-        </span>
-      </td>
-      <td className="table-right-align">
-        <span className="icon-span">
-          <i data-feather="message-square"></i>
-        </span>
+      <td className="icon-td comments-td">
+        {comments > 0 && (
+          <>
+            {comments}
+            <a href={comments_url}>
+              <MessageSquare className="icon-text" />
+            </a>
+          </>
+        )}
       </td>
     </tr>
   );

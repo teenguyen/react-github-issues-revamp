@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { AlertTriangle, Check } from "react-feather";
+import { HEADERS } from "../utils/constants";
 import "./TableStatus.scss";
 
 const ENDPOINT =
@@ -9,14 +10,12 @@ const IS_CLOSED = "state:closed";
 
 const FETCH_GET = {
   method: "GET",
-  headers: {
-    accept: "application/vnd.github+json"
-  }
+  headers: HEADERS
 };
 
 const TableStatus = () => {
-  const [openCount, setOpenCount] = useState<number>(0);
-  const [closedCount, setClosedCount] = useState<number>(0);
+  const [openCount, setOpenCount] = useState<number | string>("?");
+  const [closedCount, setClosedCount] = useState<number | string>("?");
 
   useEffect(() => {
     (async () => {
@@ -33,11 +32,11 @@ const TableStatus = () => {
   return (
     <div id="table-status">
       <span>
-        <AlertTriangle id="alert-icon" />
+        <AlertTriangle className="icon-alert" />
         {openCount} Open
       </span>
       <span>
-        <Check id="check-icon" />
+        <Check className="icon-check" />
         {closedCount} Closed
       </span>
     </div>

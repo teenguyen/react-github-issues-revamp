@@ -12,11 +12,6 @@
     cursor: pointer;
     transition: $easeInOut;
 
-    &:hover,
-    &.open {
-      background-color: lighten($theme-purple, 30%);
-    }
-
     svg {
       height: 1rem;
       width: 1rem;
@@ -31,9 +26,76 @@
   .filter-list {
     position: absolute;
     background-color: $background;
-    border: 4px solid lighten($theme-purple, 30%);
+    border: 4px solid;
     border-radius: 1rem;
     margin: 0.25rem 0;
     transition: $easeInOut;
+    visibility: visible;
+  }
+
+  &:nth-child(1) {
+    button.open,
+    button:hover {
+      background-color: $theme-shade1;
+    }
+
+    .filter-list {
+      border-color: $theme-shade1;
+    }
+  }
+
+  &:nth-child(2) {
+    button.open,
+    button:hover {
+      background-color: $theme-shade2;
+    }
+
+    .filter-list {
+      border-color: $theme-shade2;
+    }
+  }
+
+  &:nth-child(3) {
+    button.open,
+    button:hover {
+      background-color: $theme-shade3;
+    }
+
+    .filter-list {
+      border-color: $theme-shade3;
+    }
+  }
+
+  &:nth-child(4) {
+    button.open,
+    button:hover {
+      background-color: $theme-shade4;
+    }
+
+    .filter-list {
+      border-color: $theme-shade4;
+    }
+  }
+
+  &:nth-child(5) {
+    button.open,
+    button:hover {
+      background-color: $theme-shade5;
+    }
+
+    .filter-list {
+      border-color: $theme-shade5;
+    }
+  }
+
+  &:nth-child(6) {
+    button.open,
+    button:hover {
+      background-color: $theme-shade6;
+    }
+
+    .filter-list {
+      border-color: $theme-shade6;
+    }
   }
 }

@@ -50,7 +50,11 @@ const Filter = ({ label }: FilterProps) => {
       <div
         ref={popperRef}
         className="filter-list"
-        style={{ minWidth, opacity: open ? 1 : 0 }}
+        style={{
+          minWidth,
+          opacity: open ? 1 : 0,
+          visibility: open ? "visible" : "hidden"
+        }}
       >
         <ul>
           <li>A</li>

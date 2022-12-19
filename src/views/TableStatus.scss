@@ -3,18 +3,11 @@
 #table-status {
   display: flex;
   gap: 2rem;
+  padding: 0.5rem 1rem;
 
   & > span {
     display: flex;
     gap: 0.5rem;
     align-items: center;
-
-    #alert-icon {
-      color: $feather-alert;
-    }
-
-    #check-icon {
-      color: $feather-check;
-    }
   }
 }

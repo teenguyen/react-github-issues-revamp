@@ -5,13 +5,13 @@
 }
 
 body {
-  background: $theme-blue;
+  background: $background-blue;
   background: linear-gradient(
     to bottom left,
-    lighten($theme-blue, 15%),
-    lighten($theme-purple, 15%)
+    $background-blue,
+    $background-purple
   );
-  margin: 10vh 15vw;
+  margin: 10vh 10vw;
   min-height: 100vh;
   font-family: "Montserrat", sans-serif;
   color: $text-primary;
@@ -26,6 +26,7 @@ button {
 
 h1 {
   font-size: 1.5rem;
+  font-weight: lighter;
 }
 
 h2 {

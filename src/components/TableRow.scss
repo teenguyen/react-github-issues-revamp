@@ -1,0 +1,51 @@
+@import "../utils/constants.scss";
+
+tr {
+  display: grid;
+  grid-template-columns: 24px auto min-content;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  transition: $easeInOut;
+
+  &:hover {
+    background-color: rgba($theme, 0.2);
+  }
+}
+
+td {
+  padding: 0;
+}
+
+.icon-td {
+  padding-top: 0.25rem;
+}
+
+.details-td {
+  flex: 1;
+
+  .title {
+    color: $text-primary;
+    text-decoration: none;
+  }
+
+  .subtext {
+    font-size: 0.85rem;
+  }
+
+  .labels {
+    display: flex;
+    gap: 0.5rem;
+    padding-top: 0.25rem;
+  }
+
+  .link {
+    color: $text-link;
+  }
+}
+
+.comments-td {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}

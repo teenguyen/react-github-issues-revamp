@@ -1,7 +1,9 @@
 import { createContext, useEffect, useState } from "react";
 import Filter from "./components/Filter";
+import Pagination from "./views/Pagination";
 import Table from "./views/Table";
 import TableStatus from "./views/TableStatus";
+import { HEADERS } from "./utils/constants";
 import { RowProps } from "./utils/types";
 import "./App.scss";
 
@@ -23,13 +25,10 @@ function App() {
     (async () => {
       fetch(ENDPOINT, {
         method: "GET",
-        headers: {
-          accept: "application/vnd.github+json"
-        }
+        headers: HEADERS
       })
         .then(response => response.json())
         .then(data => {
-          console.log(data);
           setData(data);
         });
     })();
@@ -50,17 +49,20 @@ function App() {
         <div id="github-issues">
           <TableStatus />
 
-          <div id="table-filter">
+          <div>
             <h2>Filters:</h2>
-            <Filter label="Author" />
-            <Filter label="Labels" />
-            <Filter label="Projects" />
-            <Filter label="Milestones" />
-            <Filter label="Assignee" />
-            <Filter label="Sort" />
+            <div id="table-filter">
+              <Filter label="Author" />
+              <Filter label="Labels" />
+              <Filter label="Projects" />
+              <Filter label="Milestones" />
+              <Filter label="Assignee" />
+              <Filter label="Sort" />
+            </div>
           </div>
 
           <Table />
+          <Pagination />
         </div>
       </div>
     </AppCtx.Provider>

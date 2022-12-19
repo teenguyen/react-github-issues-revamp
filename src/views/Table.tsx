@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { AppCtx } from "../App";
 import TableRow from "../components/TableRow";
+import "./Table.scss";
 
 const Table = () => {
   const appCtx = useContext(AppCtx);
@@ -8,7 +9,7 @@ const Table = () => {
   return (
     <table>
       <tbody>
-        {appCtx?.data.map(row => (
+        {appCtx!.data.map(row => (
           <TableRow key={row.id} row={row} />
         ))}
       </tbody>
