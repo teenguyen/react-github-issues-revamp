@@ -14,16 +14,12 @@
   padding: 1rem 1.5rem 2rem;
 }
 
-.content {
-  border-radius: 0 0 1.5rem 1.5rem;
-}
-
 /* @media (max-width: 600px) {
 } */
 
 @media (prefers-color-scheme: dark) {
   .main {
-    background: rgba(15, 23, 42, 0.5); /* dark translucent */
+    background: rgba(15, 23, 42, 0.5);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
 
@@ -33,5 +29,37 @@
     box-shadow:
       0 10px 40px rgba(0, 0, 0, 0.6),
       inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+}
+
+.error {
+  button {
+    background: rgba(15, 23, 42, 0.08);
+    backdrop-filter: blur(0.75rem);
+    border: 1px solid rgba(15, 23, 42, 0.15);
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.875rem;
+    padding: 0.4rem 0.75rem;
+    transition: all 0.2s ease;
+  }
+  button:hover:not(:disabled) {
+    background: rgba(15, 23, 42, 0.12);
+  }
+  button:disabled {
+    cursor: wait;
+    opacity: 0.7;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .error button {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  .error button:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.12);
   }
 }

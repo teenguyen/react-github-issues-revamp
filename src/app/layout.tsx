@@ -17,8 +17,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Github Issues",
-  description: "Track your Github issues",
+  title: "Facebook/React Github Issues",
+  description: "Track Facebook/React Github issues",
 };
 
 export default function RootLayout({
