@@ -1,0 +1,78 @@
+:root {
+  --title-color: #0f172a;
+  --text-color: rgba(15, 23, 42, 0.6);
+  --gradient: linear-gradient(
+    135deg,
+    #f0f9ff,
+    #dbeafe,
+    #e9d5ff,
+    #fbcfe8,
+    #fde68a
+  );
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --title-color: rgba(248, 250, 252, 0.85);
+    --text-color: rgba(248, 250, 252, 0.6);
+    --gradient:
+      radial-gradient(
+        800px at 20% 30%,
+        rgba(30, 58, 138, 0.25),
+        transparent 70%
+      ),
+      radial-gradient(
+        700px at 80% 20%,
+        rgba(14, 116, 144, 0.2),
+        transparent 70%
+      ),
+      radial-gradient(
+        900px at 50% 80%,
+        rgba(2, 132, 199, 0.15),
+        transparent 75%
+      ),
+      #020617;
+    --selection-color: rgba(255, 255, 255, 0.1);
+  }
+
+  html {
+    color-scheme: dark;
+  }
+}
+
+html {
+  min-height: 100vh;
+}
+
+body {
+  animation: gradientShift 20s ease infinite;
+  background: var(--gradient);
+  background-size: 200% 200%;
+  color: var(--text-color);
+  font-family: var(--font-inter);
+  margin: 5% 10% 10%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::selection {
+  background: var(--selection-color);
+}
+
+h1 {
+  font-family: var(--font-dm-serif-display);
+  color: var(--title-color);
+  font-size: 2rem;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
