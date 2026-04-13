@@ -37,25 +37,15 @@ export default function Summary() {
             </h2>
           )}
         </span>
-        {data?.description && (
-          <p className={styles.description}>{data.description}</p>
-        )}
-        {isPending && <p>Loading repository…</p>}
+        <p className={styles.description}>
+          {data?.description && data.description}
+          {isPending && "Loading repository…"}
+          {isError && "Something went wrong :("}
+        </p>
         {isError && (
-          <div className={styles.error}>
-            <p>
-              {error instanceof Error
-                ? error.message
-                : "Something went wrong :("}
-            </p>
-            <button
-              type="button"
-              onClick={() => refetch()}
-              disabled={isFetching}
-            >
-              {isFetching ? "Retrying…" : "Retry?"}
-            </button>
-          </div>
+          <button type="button" onClick={() => refetch()} disabled={isFetching}>
+            {isFetching ? "Retrying…" : "Retry?"}
+          </button>
         )}
       </div>
 

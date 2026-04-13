@@ -1,0 +1,33 @@
+.selectWrapper {
+  display: inline-block;
+  position: relative;
+}
+
+.selectWrapper::after {
+  content: "▾";
+  font-size: 0.875rem;
+  pointer-events: none;
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+}
+
+.select {
+  appearance: none;
+  background: var(--button-background-color);
+  border: 1px solid var(--button-border-color);
+  border-radius: 0.5rem;
+  color: var(--text-color);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.875rem;
+  padding: 0.5rem;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.select:hover:not(:disabled) {
+  background: var(--button-hover-color);
+}
