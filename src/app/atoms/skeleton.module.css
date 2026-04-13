@@ -1,11 +1,11 @@
 .skeleton {
   width: 100%;
-  height: 1.5rem;
+  height: 1.25rem;
   background: linear-gradient(
     115deg,
-    rgba(255, 255, 255, 0.2) 45%,
-    rgba(255, 255, 255, 0.5) 50%,
-    rgba(255, 255, 255, 0.2) 55%
+    rgba(255, 255, 255, 0.4) 45%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0.4) 55%
   );
   backdrop-filter: blur(10px);
   border-radius: 0.5rem;

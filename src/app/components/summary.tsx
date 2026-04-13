@@ -1,11 +1,32 @@
-import { GitHubRepoSummary } from "@/types/github-repo-summary";
+"use client";
+
+import { useQuery } from "@tanstack/react-query";
+import { summaryQueryOptions } from "@/queries/summary";
 import styles from "./summary.module.css";
 import Skeleton from "../atoms/skeleton";
 
-export default function Summary({ data }: { data?: GitHubRepoSummary }) {
+const DataDisplay = ({
+  data,
+  isPending,
+}: {
+  data?: number;
+  isPending: boolean;
+}) => {
+  if (isPending) return <Skeleton width="4rem" />;
+  if (!data) return "--";
+  return data?.toLocaleString();
+};
+
+export default function Summary() {
+  const { data, isPending, isError, error, refetch, isFetching } =
+    useQuery(summaryQueryOptions);
+
   return (
-    <>
-      <span className={styles.summary}>
+    <section
+      className={styles.summary}
+      aria-label={`${data?.full_name} stats on GitHub`}
+    >
+      <div>
         <span className={styles.title}>
           <h1>github issues tracker</h1>
           {data && (
@@ -16,41 +37,48 @@ export default function Summary({ data }: { data?: GitHubRepoSummary }) {
             </h2>
           )}
         </span>
-        <section
-          className={styles.section}
-          aria-label="facebook/react stats on GitHub"
-        >
-          <dl className={styles.stats}>
-            <div>
-              <dt>Stars</dt>
-              {data?.stargazers_count ? (
-                <dd>{data.stargazers_count.toLocaleString()}</dd>
-              ) : (
-                <Skeleton width="4rem" />
-              )}
-            </div>
-            <div>
-              <dt>Open issues</dt>
-              {data?.open_issues_count ? (
-                <dd>{data.open_issues_count.toLocaleString()}</dd>
-              ) : (
-                <Skeleton width="4rem" />
-              )}
-            </div>
-            <div>
-              <dt>Forks</dt>
-              {data?.forks_count ? (
-                <dd>{data.forks_count.toLocaleString()}</dd>
-              ) : (
-                <Skeleton width="4rem" />
-              )}
-            </div>
-          </dl>
-        </section>
-      </span>
-      {data?.description && (
-        <p className={styles.description}>{data.description}</p>
-      )}
-    </>
+        {data?.description && (
+          <p className={styles.description}>{data.description}</p>
+        )}
+        {isPending && <p>Loading repository…</p>}
+        {isError && (
+          <div className={styles.error}>
+            <p>
+              {error instanceof Error
+                ? error.message
+                : "Something went wrong :("}
+            </p>
+            <button
+              type="button"
+              onClick={() => refetch()}
+              disabled={isFetching}
+            >
+              {isFetching ? "Retrying…" : "Retry?"}
+            </button>
+          </div>
+        )}
+      </div>
+
+      <dl className={styles.stats}>
+        <div>
+          <dt>Stars</dt>
+          <dd>
+            <DataDisplay data={data?.stargazers_count} isPending={isPending} />
+          </dd>
+        </div>
+        <div>
+          <dt>Open issues</dt>
+          <dd>
+            <DataDisplay data={data?.open_issues_count} isPending={isPending} />
+          </dd>
+        </div>
+        <div>
+          <dt>Forks</dt>
+          <dd>
+            <DataDisplay data={data?.forks_count} isPending={isPending} />
+          </dd>
+        </div>
+      </dl>
+    </section>
   );
 }

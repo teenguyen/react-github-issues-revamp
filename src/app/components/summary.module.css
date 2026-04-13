@@ -1,19 +1,19 @@
 .summary {
-  align-items: center;
+  align-items: flex-end;
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 1rem 0.5rem;
-  margin-bottom: 0.5rem;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
 }
 
 .title {
   align-items: baseline;
   align-self: flex-start;
+  gap: 0.5rem;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  column-gap: 0.5rem;
+  margin-bottom: 0.25rem;
 
   a {
     color: inherit;
@@ -23,10 +23,6 @@
       text-decoration: underline;
     }
   }
-}
-
-.section {
-  margin-inline-start: auto;
 }
 
 .stats {
@@ -46,8 +42,8 @@
       letter-spacing: 0.02em;
       margin: 0;
       opacity: 0.75;
-      text-transform: uppercase;
       text-align: right;
+      text-transform: uppercase;
     }
 
     dd {
@@ -65,5 +61,5 @@
   color: inherit;
   font-size: 0.875rem;
   line-height: 1.5;
-  margin: 0 0 1rem;
+  margin: 0;
 }

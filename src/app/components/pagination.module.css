@@ -1,0 +1,28 @@
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+
+  & > button {
+    height: 2.5rem;
+    width: 3rem;
+  }
+}
+
+.selected:disabled {
+  --selected-text-color: rgba(15, 23, 42, 0.6);
+  --selected-border-color: rgba(15, 23, 42, 0.6);
+  border-width: 2px;
+  border-color: var(--selected-border-color);
+  color: var(--selected-text-color);
+  font-weight: 600;
+  opacity: 1;
+}
+
+@media (prefers-color-scheme: dark) {
+  .selected:disabled {
+    --selected-text-color: rgba(255, 255, 255, 0.5);
+    --selected-border-color: rgba(255, 255, 255, 0.5);
+  }
+}

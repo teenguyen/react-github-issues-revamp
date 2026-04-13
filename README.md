@@ -30,10 +30,10 @@ This runs `docker compose up --watch`, which syncs file changes into the contain
 
 ## Scripts
 
-| Command | Description |
-|---|---|
-| `yarn start` | Start the dev server with hot reload (`docker compose up --watch`) |
-| `yarn build` | Build the image and start the container (`docker compose up --build`) |
-| `yarn ndev` | Run the Next.js dev server directly (without Docker) |
-| `yarn nbuild` | Build the Next.js app for production |
-| `yarn nstart` | Start the Next.js production server |
+| Command       | Description                                                           |
+| ------------- | --------------------------------------------------------------------- |
+| `yarn start`  | Start the dev server with hot reload (`docker compose up --watch`)    |
+| `yarn build`  | Build the image and start the container (`docker compose up --build`) |
+| `yarn ndev`   | Run the Next.js dev server directly (without Docker)                  |
+| `yarn nbuild` | Build the Next.js app for production                                  |
+| `yarn nstart` | Start the Next.js production server                                   |
