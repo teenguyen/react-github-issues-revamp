@@ -53,8 +53,13 @@ export default function IssuesTable({
                     <Skeleton width="100%" height={12} />
                   </th>
                   <td className={styles.titleCell}>
-                    <Skeleton width="85%" height={20} />
-                    <Skeleton width="15%" height={12} />
+                    <Skeleton width="85%" height={22} />
+                    <Skeleton width="15%" height={16} />
+                    <span className={styles.labels}>
+                      <Skeleton width="8%" height={18} />
+                      <Skeleton width="8%" height={18} />
+                      <Skeleton width="8%" height={18} />
+                    </span>
                   </td>
                   <td className={styles.comments}>
                     <Skeleton width="100%" height={32} />

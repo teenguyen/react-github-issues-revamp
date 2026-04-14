@@ -2,11 +2,11 @@
   display: flex;
   justify-content: center;
   gap: 0.5rem;
-  margin-top: 1rem;
 
   & > button {
-    height: 2.5rem;
-    width: 3rem;
+    font-size: 0.875rem;
+    height: 2rem;
+    width: 2.5rem;
   }
 }
 

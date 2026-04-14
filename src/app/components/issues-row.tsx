@@ -42,7 +42,7 @@ export default function IssuesRow({ issue }: { issue: Issue }) {
           {issue.user?.login != null && <span>by {issue.user.login}</span>}
         </div>
         {issue.labels.length > 0 && (
-          <ul className={rowStyles.labels}>
+          <ul className={tableStyles.labels}>
             {issue.labels.map((label) => (
               <li
                 key={label.name}
