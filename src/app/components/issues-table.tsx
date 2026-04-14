@@ -1,37 +1,22 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { summaryQueryOptions } from "@/queries/summary";
-import { ISSUES_PAGE_SIZE, issuesQueryOptions } from "@/queries/issues";
+import { type Issue } from "@/queries/issues";
 import Skeleton from "../atoms/skeleton";
 import styles from "./issues-table.module.css";
 import IssuesRow from "./issues-row";
-import Pagination from "./pagination";
 
-export default function IssuesTable() {
-  const { data: summary } = useQuery(summaryQueryOptions);
-  const issuesUrl = summary?.issues_url.replace(/\{\/number\}$/, "");
-  const [page, setPage] = useState(1);
-
-  useEffect(() => setPage(1), [issuesUrl]);
-
-  const issuesFetchUrl = useMemo(() => {
-    if (!issuesUrl) return undefined;
-    const u = new URL(issuesUrl);
-    u.searchParams.set("per_page", String(ISSUES_PAGE_SIZE));
-    u.searchParams.set("page", String(page));
-    return u.toString();
-  }, [issuesUrl, page]);
-
-  const { data, isPending, isError, isFetching } = useQuery(
-    issuesQueryOptions(issuesFetchUrl),
-  );
-
-  const issues = data?.issues ?? [];
-  const totalIssues = summary?.open_issues_count ?? 0;
-  const totalPages = Math.ceil(totalIssues / ISSUES_PAGE_SIZE);
-
+export default function IssuesTable({
+  issues,
+  queryState,
+}: {
+  issues: Issue[];
+  queryState: {
+    isPending: boolean;
+    isError: boolean;
+    isFetching: boolean;
+  };
+}) {
+  const { isPending, isError, isFetching } = queryState;
   return (
     <section aria-label="Open issues">
       <div className={styles.tableWrap}>
@@ -53,19 +38,15 @@ export default function IssuesTable() {
               issues.map((issue) => (
                 <IssuesRow key={issue.number} issue={issue} />
               ))}
-            {issuesFetchUrl &&
-              !isPending &&
-              !isFetching &&
-              !isError &&
-              issues.length === 0 && (
-                <tr>
-                  <td className={styles.tableMessage} colSpan={3}>
-                    No issues found.
-                  </td>
-                </tr>
-              )}
+            {!isPending && !isFetching && !isError && issues.length === 0 && (
+              <tr>
+                <td colSpan={3}>
+                  <p className={styles.tableMessage}>No issues found.</p>
+                </td>
+              </tr>
+            )}
             {isPending &&
-              !data &&
+              issues.length === 0 &&
               new Array(3).fill(0).map((_, index) => (
                 <tr key={index}>
                   <th className={styles.num}>
@@ -82,22 +63,14 @@ export default function IssuesTable() {
               ))}
             {isError && (
               <tr>
-                <td className={styles.tableMessage} colSpan={3}>
-                  Error loading issues.
+                <td colSpan={3}>
+                  <p className={styles.tableMessage}>Error loading issues.</p>
                 </td>
               </tr>
             )}
           </tbody>
         </table>
       </div>
-      {totalPages > 1 && (
-        <Pagination
-          currentPage={page}
-          totalPages={totalPages}
-          onPageChange={setPage}
-          isFetching={isFetching}
-        />
-      )}
     </section>
   );
 }

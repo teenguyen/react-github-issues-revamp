@@ -1,7 +1,4 @@
-"use client";
-
-import { useQuery } from "@tanstack/react-query";
-import { summaryQueryOptions } from "@/queries/summary";
+import type { Summary as SummaryType } from "@/queries/summary";
 import styles from "./summary.module.css";
 import Skeleton from "../atoms/skeleton";
 
@@ -17,28 +14,45 @@ const DataDisplay = ({
   return data?.toLocaleString();
 };
 
-export default function Summary() {
-  const { data, isPending, isError, error, refetch, isFetching } =
-    useQuery(summaryQueryOptions);
+type SummaryProps = Partial<SummaryType> & {
+  queryState: {
+    isPending: boolean;
+    isError: boolean;
+    refetch: () => void;
+    isFetching: boolean;
+  };
+};
 
+export default function Summary({
+  full_name,
+  description,
+  stargazers_count,
+  open_issues_count,
+  forks_count,
+  html_url,
+  queryState,
+}: SummaryProps) {
+  const { isPending, isError, refetch, isFetching } = queryState;
   return (
     <section
       className={styles.summary}
-      aria-label={`${data?.full_name} stats on GitHub`}
+      aria-label={
+        full_name ? `${full_name} stats on GitHub` : "Repository stats on GitHub"
+      }
     >
       <div>
         <span className={styles.title}>
           <h1>github issues tracker</h1>
-          {data && (
+          {full_name && (
             <h2>
-              <a href={data.html_url} target="_blank" rel="noopener noreferrer">
-                {data.full_name}
+              <a href={html_url} target="_blank" rel="noopener noreferrer">
+                {full_name}
               </a>
             </h2>
           )}
         </span>
         <p className={styles.description}>
-          {data?.description && data.description}
+          {description}
           {isPending && "Loading repository…"}
           {isError && "Something went wrong :("}
         </p>
@@ -53,19 +67,19 @@ export default function Summary() {
         <div>
           <dt>Stars</dt>
           <dd>
-            <DataDisplay data={data?.stargazers_count} isPending={isPending} />
+            <DataDisplay data={stargazers_count} isPending={isPending} />
           </dd>
         </div>
         <div>
           <dt>Open issues</dt>
           <dd>
-            <DataDisplay data={data?.open_issues_count} isPending={isPending} />
+            <DataDisplay data={open_issues_count} isPending={isPending} />
           </dd>
         </div>
         <div>
           <dt>Forks</dt>
           <dd>
-            <DataDisplay data={data?.forks_count} isPending={isPending} />
+            <DataDisplay data={forks_count} isPending={isPending} />
           </dd>
         </div>
       </dl>

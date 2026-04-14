@@ -1,4 +1,5 @@
 import { keepPreviousData, UseQueryOptions } from "@tanstack/react-query";
+import { parseGithubLinkHeader } from "./githubLink";
 
 export type Issue = {
   number: number;
@@ -36,23 +37,11 @@ export const issuesQueryOptions = (
     if (!res.ok) throw new Error(`GitHub API responded with ${res.status}`);
 
     const issues = (await res.json()) as Issue[];
-    const links = res.headers
-      .get("Link")
-      ?.split(",")
-      .reduce(
-        (acc, link) => {
-          const linkSplit = link.trim().split(";");
-          const url = linkSplit[0].trim().replace(/<|>/g, "");
-          const rel = linkSplit[1].trim().split("=")[1];
-          acc[rel] = url;
-          return acc;
-        },
-        {} as Record<string, string>,
-      );
+    const links = parseGithubLinkHeader(res.headers.get("Link"));
 
     return {
       issues,
-      links: links ?? {},
+      links,
     };
   },
 });
