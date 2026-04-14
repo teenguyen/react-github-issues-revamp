@@ -5,6 +5,7 @@
 
 .selectWrapper::after {
   content: "▾";
+  color: var(--text-color);
   font-size: 0.875rem;
   pointer-events: none;
   position: absolute;
@@ -14,20 +15,41 @@
 
 .select {
   appearance: none;
-  background: var(--button-background-color);
+  background-color: var(--button-background-color);
   border: 1px solid var(--button-border-color);
   border-radius: 0.5rem;
+  color-scheme: var(--color-scheme);
   color: var(--text-color);
   cursor: pointer;
+  font: inherit;
   font-family: inherit;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   padding: 0.5rem;
-  transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
 }
 
-.select:hover:not(:disabled) {
-  background: var(--button-hover-color);
+.selectWrapper:hover:not(:disabled) {
+  background-color: var(--button-hover-color);
+  border-radius: 0.5rem;
+  transition: background-color 0.2s ease;
+}
+
+.select:focus-visible {
+  outline: 2px solid var(--button-border-color);
+  outline-offset: 1px;
+}
+
+.select:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.select option {
+  color: var(--text-color);
+}
+
+@media (prefers-color-scheme: dark) {
+  /* an option background colour cannot have an alpha channel, so it's manually set here */
+  .select option {
+    background-color: #0f172a;
+  }
 }

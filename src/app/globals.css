@@ -1,4 +1,5 @@
 :root {
+  --color-scheme: light;
   --title-color: rgba(15, 23, 42, 0.85);
   --text-color: rgba(15, 23, 42, 0.6);
   --gradient: linear-gradient(
@@ -17,6 +18,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
+    --color-scheme: dark;
     --title-color: rgba(248, 250, 252, 0.85);
     --text-color: rgba(248, 250, 252, 0.6);
     --gradient:
