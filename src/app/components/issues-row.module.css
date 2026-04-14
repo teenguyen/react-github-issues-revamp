@@ -1,3 +1,16 @@
+.row {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.row:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.25),
+    inset 0 1px rgba(255, 255, 255, 0.08);
+}
+
 .meta {
   color: inherit;
   font-size: 0.8125rem;
@@ -18,9 +31,16 @@
   justify-content: center;
 }
 
+.commentButton {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
 .label {
   border: 1px solid transparent;
   border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   font-size: 0.6875rem;
   font-weight: 600;
   line-height: 1;

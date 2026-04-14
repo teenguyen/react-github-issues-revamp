@@ -2,7 +2,6 @@
 
 import { type CSSProperties } from "react";
 import clsx from "clsx";
-import { getContrast, transparentize } from "color2k";
 import { MessageSquare } from "react-feather";
 import { Issue } from "@/queries/issues";
 import tableStyles from "./issues-table.module.css";
@@ -10,34 +9,34 @@ import rowStyles from "./issues-row.module.css";
 
 function labelStyle(color: string, isDark: boolean): CSSProperties {
   const colorCode = `#${color}`;
-  if (isDark) {
-    return {
-      backgroundColor: `${colorCode}33`,
-      color: colorCode,
-    };
-  } else {
-    return {
-      backgroundColor: colorCode,
-      color:
-        getContrast(colorCode, "#ffffff") >= getContrast(colorCode, "#000000")
-          ? "#ffffff"
-          : "#000000",
-    };
-  }
+  return isDark
+    ? {
+        backgroundColor: `${colorCode}33`, // 85% opacity
+        color: colorCode,
+      }
+    : {
+        borderColor: colorCode,
+        backgroundColor: `${colorCode}bf`, // 75% opacity
+        color: "#0f172abf", // --text-color
+      };
 }
 
 export default function IssuesRow({ issue }: { issue: Issue }) {
   const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
   return (
-    <tr key={issue.html_url}>
+    <tr
+      key={issue.html_url}
+      className={rowStyles.row}
+      onClick={() =>
+        window.open(issue.html_url, "_blank", "noopener noreferrer")
+      }
+    >
       <th className={tableStyles.num} scope="row">
         {issue.number}
       </th>
       <td className={tableStyles.titleCell}>
-        <a href={issue.html_url} target="_blank" rel="noopener noreferrer">
-          {issue.title}
-        </a>
+        {issue.title}
         <div className={clsx(rowStyles.meta, rowStyles.user)}>
           {issue.user?.login != null && <span>by {issue.user.login}</span>}
         </div>
@@ -59,7 +58,7 @@ export default function IssuesRow({ issue }: { issue: Issue }) {
         <div className={rowStyles.comments}>
           {issue.comments > 0 && (
             <button
-              className={rowStyles.comments}
+              className={rowStyles.commentButton}
               onClick={() =>
                 window.open(issue.html_url, "_blank", "noopener noreferrer")
               }
