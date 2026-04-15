@@ -1,7 +1,6 @@
 import clsx from "clsx";
 import {
   useCallback,
-  useRef,
   useState,
   type AnimationEvent,
   type Dispatch,
@@ -21,8 +20,6 @@ export type ThemeToggleProps = {
 export function ThemeToggle({ theme, setTheme }: ThemeToggleProps) {
   const [toggleAnimPhase, setToggleAnimPhase] =
     useState<ToggleAnimPhase>("idle");
-  const toggleAnimPhaseRef = useRef(toggleAnimPhase);
-  toggleAnimPhaseRef.current = toggleAnimPhase;
 
   const handleToggle = useCallback(() => {
     if (toggleAnimPhase !== "idle") return;
@@ -36,15 +33,14 @@ export function ThemeToggle({ theme, setTheme }: ThemeToggleProps) {
   const handleToggleIconAnimationEnd = useCallback(
     (event: AnimationEvent<HTMLSpanElement>) => {
       if (event.target !== event.currentTarget) return;
-      const phase = toggleAnimPhaseRef.current;
-      if (phase === "exiting") {
+      if (toggleAnimPhase === "exiting") {
         setTheme((t) => (t === "dark" ? "light" : "dark"));
         setToggleAnimPhase("entering");
-      } else if (phase === "entering") {
+      } else if (toggleAnimPhase === "entering") {
         setToggleAnimPhase("idle");
       }
     },
-    [setTheme],
+    [setTheme, toggleAnimPhase],
   );
 
   const moonExit = toggleAnimPhase === "exiting" && theme === "light";
