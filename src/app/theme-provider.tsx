@@ -2,7 +2,6 @@
 
 import {
   createContext,
-  useCallback,
   useContext,
   useLayoutEffect,
   useMemo,
@@ -10,8 +9,8 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { Moon, Sun } from "react-feather";
-import styles from "./theme-toggle.module.css";
+import { ThemeToggle } from "./components/theme-toggle";
+import styles from "./theme-provider.module.css";
 
 export type Theme = "light" | "dark";
 
@@ -47,10 +46,6 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
     document.documentElement.setAttribute("data-theme", theme);
   }, [theme]);
 
-  const toggle = useCallback(() => {
-    setTheme((t) => (t === "dark" ? "light" : "dark"));
-  }, []);
-
   const value = useMemo(() => ({ theme, isDark: theme === "dark" }), [theme]);
 
   return (
@@ -66,20 +61,7 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
         </div>
       ) : null}
       {children}
-      <button
-        type="button"
-        className={styles.toggle}
-        onClick={toggle}
-        aria-label={
-          theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
-        }
-      >
-        {theme === "dark" ? (
-          <Sun size={18} strokeWidth={2} />
-        ) : (
-          <Moon size={18} strokeWidth={2} />
-        )}
-      </button>
+      <ThemeToggle theme={theme} setTheme={setTheme} />
     </ThemeContext.Provider>
   );
 }
