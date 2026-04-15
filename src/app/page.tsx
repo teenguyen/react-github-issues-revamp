@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useLayoutEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Summary from "./organisms/summary";
 import IssuesTable from "./organisms/issues-table";
@@ -14,6 +14,7 @@ import IssuesFilter, {
 } from "./organisms/issues-filter";
 import styles from "./page.module.css";
 import { summaryQueryOptions } from "@/queries/summary";
+import { inferTotalPagesFromGithubLinks } from "@/queries/githubLink";
 import { ISSUES_PAGE_SIZE, issuesQueryOptions } from "@/queries/issues";
 import Pagination from "./components/pagination";
 
@@ -27,7 +28,7 @@ export default function Home() {
     refetch: summaryRefetch,
     isFetching: summaryIsFetching,
   } = useQuery(summaryQueryOptions);
-  const { full_name, issues_url, open_issues_count } = summary ?? {};
+  const { full_name, issues_url } = summary ?? {};
 
   const [page, setPage] = useState(1);
   const [labelFilter, setLabelFilter] = useState(DEFAULT_LABEL);
@@ -37,7 +38,7 @@ export default function Home() {
   const [issueSortDirection, setIssueSortDirection] =
     useState<IssueSortDirection>(ISSUE_SORT_DIRECTION.DESC);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setPage(1);
   }, [labelFilter, issueSortBy, issueSortDirection]);
 
@@ -63,13 +64,15 @@ export default function Home() {
     isPending,
     isError,
     isFetching,
+    isPlaceholderData,
   } = useQuery(issuesQueryOptions(issuesFetchUrl));
 
   const issues = issuesData?.issues ?? [];
-  const totalPages = Math.max(
-    0,
-    Math.ceil(open_issues_count ?? 0 / ISSUES_PAGE_SIZE),
-  );
+  const totalPages = useMemo(() => {
+    if (!issuesFetchUrl) return 0;
+    if (isPlaceholderData) return 1;
+    return inferTotalPagesFromGithubLinks(issuesData?.links ?? {}, page);
+  }, [issuesFetchUrl, isPlaceholderData, issuesData?.links, page]);
 
   const issuesFilterContextValue = useMemo(
     () => ({
