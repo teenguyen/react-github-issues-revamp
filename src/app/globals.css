@@ -34,7 +34,7 @@ body {
   justify-content: center;
   font-family: var(--font-inter);
   isolation: isolate;
-  margin: 10vh 10vw;
+  margin: 8vh 10vw;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   position: relative;
