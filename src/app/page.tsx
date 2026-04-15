@@ -1,19 +1,19 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useQueries, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import Summary from "./organisms/summary";
 import IssuesTable from "./organisms/issues-table";
 import IssuesFilter, {
   DEFAULT_LABEL,
   ISSUE_SORT_BY,
   ISSUE_SORT_DIRECTION,
+  IssuesFilterContext,
   type IssueSortBy,
   type IssueSortDirection,
 } from "./organisms/issues-filter";
 import styles from "./page.module.css";
 import { summaryQueryOptions } from "@/queries/summary";
-import { labelsQueryOptions } from "@/queries/labels";
 import { ISSUES_PAGE_SIZE, issuesQueryOptions } from "@/queries/issues";
 import Pagination from "./components/pagination";
 
@@ -29,13 +29,13 @@ export default function Home() {
   } = useQuery(summaryQueryOptions);
   const { full_name, issues_url, open_issues_count } = summary ?? {};
 
+  const [page, setPage] = useState(1);
   const [labelFilter, setLabelFilter] = useState(DEFAULT_LABEL);
   const [issueSortBy, setIssueSortBy] = useState<IssueSortBy>(
     ISSUE_SORT_BY.CREATED,
   );
   const [issueSortDirection, setIssueSortDirection] =
     useState<IssueSortDirection>(ISSUE_SORT_DIRECTION.DESC);
-  const [page, setPage] = useState(1);
 
   useEffect(() => {
     setPage(1);
@@ -58,18 +58,29 @@ export default function Home() {
     return u.toString();
   }, [issuesUrl, page, labelFilter, issueSortBy, issueSortDirection]);
 
-  const [{ data, isPending, isError, isFetching }, { data: labels = [] }] =
-    useQueries({
-      queries: [
-        issuesQueryOptions(issuesFetchUrl),
-        labelsQueryOptions(full_name),
-      ],
-    });
+  const {
+    data: issuesData,
+    isPending,
+    isError,
+    isFetching,
+  } = useQuery(issuesQueryOptions(issuesFetchUrl));
 
-  const issues = data?.issues ?? [];
+  const issues = issuesData?.issues ?? [];
   const totalPages = Math.max(
     0,
     Math.ceil(open_issues_count ?? 0 / ISSUES_PAGE_SIZE),
+  );
+
+  const issuesFilterContextValue = useMemo(
+    () => ({
+      labelFilter,
+      setLabelFilter,
+      issueSortBy,
+      setIssueSortBy,
+      issueSortDirection,
+      setIssueSortDirection,
+    }),
+    [labelFilter, issueSortBy, issueSortDirection],
   );
 
   return (
@@ -83,16 +94,9 @@ export default function Home() {
           isFetching: summaryIsFetching,
         }}
       />
-      <IssuesFilter
-        labels={labels}
-        repoReady={Boolean(full_name)}
-        labelFilter={labelFilter}
-        onLabelFilterChange={setLabelFilter}
-        issueSortBy={issueSortBy}
-        onIssueSortByChange={setIssueSortBy}
-        issueSortDirection={issueSortDirection}
-        onIssueSortDirectionChange={setIssueSortDirection}
-      />
+      <IssuesFilterContext.Provider value={issuesFilterContextValue}>
+        <IssuesFilter full_name={full_name} />
+      </IssuesFilterContext.Provider>
       <IssuesTable
         issues={issues}
         queryState={{

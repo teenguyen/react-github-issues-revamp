@@ -1,6 +1,8 @@
-import type { RepoLabel } from "@/queries/labels";
+import { createContext, useContext } from "react";
+import { labelsQueryOptions, type RepoLabel } from "@/queries/labels";
 import Dropdown from "../atoms/dropdown";
 import styles from "./issues-filter.module.css";
+import { useQuery } from "@tanstack/react-query";
 
 export const DEFAULT_LABEL = "";
 
@@ -17,6 +19,28 @@ export const ISSUE_SORT_DIRECTION = {
 } as const;
 export type IssueSortDirection =
   (typeof ISSUE_SORT_DIRECTION)[keyof typeof ISSUE_SORT_DIRECTION];
+
+export type IssuesFilterContextValue = {
+  labelFilter: string;
+  setLabelFilter: (value: string) => void;
+  issueSortBy: IssueSortBy;
+  setIssueSortBy: (value: IssueSortBy) => void;
+  issueSortDirection: IssueSortDirection;
+  setIssueSortDirection: (value: IssueSortDirection) => void;
+};
+
+export const IssuesFilterContext =
+  createContext<IssuesFilterContextValue | null>(null);
+
+export function useIssuesFilter(): IssuesFilterContextValue {
+  const ctx = useContext(IssuesFilterContext);
+  if (!ctx) {
+    throw new Error(
+      "useIssuesFilter must be used within IssuesFilterContext.Provider",
+    );
+  }
+  return ctx;
+}
 
 const ISSUE_SORT_BY_OPTIONS: ReadonlyArray<{
   value: IssueSortBy;
@@ -56,25 +80,20 @@ function isIssueSortDirection(value: string): value is IssueSortDirection {
 }
 
 export default function IssuesFilter({
-  labels,
-  repoReady,
-  labelFilter,
-  onLabelFilterChange,
-  issueSortBy,
-  onIssueSortByChange,
-  issueSortDirection,
-  onIssueSortDirectionChange,
+  full_name,
 }: {
-  labels: RepoLabel[];
-  repoReady: boolean;
-  labelFilter: string;
-  onLabelFilterChange: (value: string) => void;
-  issueSortBy: IssueSortBy;
-  onIssueSortByChange: (value: IssueSortBy) => void;
-  issueSortDirection: IssueSortDirection;
-  onIssueSortDirectionChange: (value: IssueSortDirection) => void;
+  full_name: string | undefined;
 }) {
-  const disabled = !repoReady;
+  const { data: labels = [] } = useQuery(labelsQueryOptions(full_name));
+  const {
+    labelFilter,
+    setLabelFilter,
+    issueSortBy,
+    setIssueSortBy,
+    issueSortDirection,
+    setIssueSortDirection,
+  } = useIssuesFilter();
+  const disabled = !full_name;
 
   return (
     <div className={styles.controls}>
@@ -82,7 +101,7 @@ export default function IssuesFilter({
         id="issues-label-filter"
         label="Filter by label"
         value={labelFilter}
-        onChange={(e) => onLabelFilterChange(e.target.value)}
+        onChange={(e) => setLabelFilter(e.target.value)}
         disabled={disabled}
       >
         <option value={DEFAULT_LABEL}>All labels</option>
@@ -101,7 +120,7 @@ export default function IssuesFilter({
           onChange={(e) => {
             const value = e.target.value;
             if (!isIssueSortBy(value)) return;
-            onIssueSortByChange(value);
+            setIssueSortBy(value);
           }}
           disabled={disabled}
         >
@@ -119,7 +138,7 @@ export default function IssuesFilter({
           onChange={(e) => {
             const value = e.target.value;
             if (!isIssueSortDirection(value)) return;
-            onIssueSortDirectionChange(value);
+            setIssueSortDirection(value);
           }}
           disabled={disabled}
         >

@@ -7,7 +7,8 @@ import { Issue } from "@/queries/issues";
 import tableStyles from "../organisms/issues-table.module.css";
 import rowStyles from "./issues-row.module.css";
 
-function labelStyle(color: string, isDark: boolean): CSSProperties {
+function labelStyle(color: string): CSSProperties {
+  const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
   const colorCode = `#${color}`;
   return {
     borderColor: colorCode,
@@ -17,8 +18,6 @@ function labelStyle(color: string, isDark: boolean): CSSProperties {
 }
 
 export default function IssuesRow({ issue }: { issue: Issue }) {
-  const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-
   return (
     <tr
       key={issue.html_url}
@@ -41,7 +40,7 @@ export default function IssuesRow({ issue }: { issue: Issue }) {
               <li
                 key={label.name}
                 className={rowStyles.label}
-                style={labelStyle(label.color, isDark)}
+                style={labelStyle(label.color)}
               >
                 {label.name}
               </li>
