@@ -30,6 +30,7 @@ export function useTheme() {
 
 export default function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>("light");
+  const [loading, setLoading] = useState(true);
   const appliedSystemPreference = useRef(false);
 
   useLayoutEffect(() => {
@@ -40,6 +41,7 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
         : "light";
       setTheme(initial);
       document.documentElement.setAttribute("data-theme", initial);
+      setLoading(false);
       return;
     }
     document.documentElement.setAttribute("data-theme", theme);
@@ -49,13 +51,20 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
     setTheme((t) => (t === "dark" ? "light" : "dark"));
   }, []);
 
-  const value = useMemo(
-    () => ({ theme, isDark: theme === "dark" }),
-    [theme],
-  );
+  const value = useMemo(() => ({ theme, isDark: theme === "dark" }), [theme]);
 
   return (
     <ThemeContext.Provider value={value}>
+      {loading ? (
+        <div
+          className={styles.loadingOverlay}
+          aria-busy="true"
+          aria-live="polite"
+        >
+          <span className="sr-only">Loading…</span>
+          <div className={styles.spinner} aria-hidden />
+        </div>
+      ) : null}
       {children}
       <button
         type="button"
@@ -65,7 +74,11 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
           theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
         }
       >
-        {theme === "dark" ? <Sun size={18} strokeWidth={2} /> : <Moon size={18} strokeWidth={2} />}
+        {theme === "dark" ? (
+          <Sun size={18} strokeWidth={2} />
+        ) : (
+          <Moon size={18} strokeWidth={2} />
+        )}
       </button>
     </ThemeContext.Provider>
   );
