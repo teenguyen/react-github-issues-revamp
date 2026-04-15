@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Summary from "./organisms/summary";
 import IssuesTable from "./organisms/issues-table";
@@ -38,10 +38,6 @@ export default function Home() {
   const [issueSortDirection, setIssueSortDirection] =
     useState<IssueSortDirection>(ISSUE_SORT_DIRECTION.DESC);
 
-  useLayoutEffect(() => {
-    setPage(1);
-  }, [labelFilter, issueSortBy, issueSortDirection]);
-
   const issuesUrl = issues_url?.replace(/\{\/number\}$/, "");
   const issuesFetchUrl = useMemo(() => {
     if (!issuesUrl) return "";
@@ -77,11 +73,20 @@ export default function Home() {
   const issuesFilterContextValue = useMemo(
     () => ({
       labelFilter,
-      setLabelFilter,
+      setLabelFilter: (value: string) => {
+        setLabelFilter(value);
+        setPage(1);
+      },
       issueSortBy,
-      setIssueSortBy,
+      setIssueSortBy: (value: IssueSortBy) => {
+        setIssueSortBy(value);
+        setPage(1);
+      },
       issueSortDirection,
-      setIssueSortDirection,
+      setIssueSortDirection: (value: IssueSortDirection) => {
+        setIssueSortDirection(value);
+        setPage(1);
+      },
     }),
     [labelFilter, issueSortBy, issueSortDirection],
   );

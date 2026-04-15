@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { labelsQueryOptions, type RepoLabel } from "@/queries/labels";
+import { labelsQueryOptions } from "@/queries/labels";
 import Dropdown from "../atoms/dropdown";
 import styles from "./issues-filter.module.css";
 import { useQuery } from "@tanstack/react-query";
