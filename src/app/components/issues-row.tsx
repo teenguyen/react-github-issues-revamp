@@ -9,16 +9,11 @@ import rowStyles from "./issues-row.module.css";
 
 function labelStyle(color: string, isDark: boolean): CSSProperties {
   const colorCode = `#${color}`;
-  return isDark
-    ? {
-        backgroundColor: `${colorCode}33`, // 85% opacity
-        color: colorCode,
-      }
-    : {
-        borderColor: colorCode,
-        backgroundColor: `${colorCode}bf`, // 75% opacity
-        color: "#0f172abf", // --text-color
-      };
+  return {
+    borderColor: colorCode,
+    backgroundColor: `${colorCode}40`, // 25% opacity
+    color: isDark ? colorCode : "#0f172abf", // --text-color
+  };
 }
 
 export default function IssuesRow({ issue }: { issue: Issue }) {
