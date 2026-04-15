@@ -4,11 +4,11 @@ import { type CSSProperties } from "react";
 import clsx from "clsx";
 import { MessageSquare } from "react-feather";
 import { Issue } from "@/queries/issues";
+import { useTheme } from "../theme-provider";
 import tableStyles from "../organisms/issues-table.module.css";
 import rowStyles from "./issues-row.module.css";
 
-function labelStyle(color: string): CSSProperties {
-  const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+function labelStyle(color: string, isDark: boolean): CSSProperties {
   const colorCode = `#${color}`;
   return {
     borderColor: colorCode,
@@ -18,6 +18,8 @@ function labelStyle(color: string): CSSProperties {
 }
 
 export default function IssuesRow({ issue }: { issue: Issue }) {
+  const { isDark } = useTheme();
+
   return (
     <tr
       key={issue.html_url}
@@ -40,7 +42,7 @@ export default function IssuesRow({ issue }: { issue: Issue }) {
               <li
                 key={label.name}
                 className={rowStyles.label}
-                style={labelStyle(label.color)}
+                style={labelStyle(label.color, isDark)}
               >
                 {label.name}
               </li>

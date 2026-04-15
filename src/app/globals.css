@@ -1,4 +1,6 @@
-:root {
+:root,
+html[data-theme="light"] {
+  color-scheme: light;
   --color-scheme: light;
   --title-color: rgba(15, 23, 42, 0.85);
   --text-color: rgba(15, 23, 42, 0.75);
@@ -9,21 +11,16 @@
   --button-hover-color: rgba(15, 23, 42, 0.12);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-scheme: dark;
-    --title-color: rgba(248, 250, 252, 0.85);
-    --text-color: rgba(248, 250, 252, 0.75);
-    --page-background: url("/dark.jpeg");
-    --selection-color: rgba(255, 255, 255, 0.2);
-    --button-background-color: rgba(255, 255, 255, 0.08);
-    --button-border-color: rgba(255, 255, 255, 0.12);
-    --button-hover-color: rgba(255, 255, 255, 0.12);
-  }
-
-  html {
-    color-scheme: dark;
-  }
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --color-scheme: dark;
+  --title-color: rgba(248, 250, 252, 0.85);
+  --text-color: rgba(248, 250, 252, 0.75);
+  --page-background: url("/dark.jpeg");
+  --selection-color: rgba(255, 255, 255, 0.2);
+  --button-background-color: rgba(255, 255, 255, 0.08);
+  --button-border-color: rgba(255, 255, 255, 0.12);
+  --button-hover-color: rgba(255, 255, 255, 0.12);
 }
 
 html {
@@ -46,6 +43,10 @@ body {
   margin: 10vh 10vw;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
+}
+
+html[data-theme="dark"] body {
+  background-color: #0f172a;
 }
 
 body::selection {

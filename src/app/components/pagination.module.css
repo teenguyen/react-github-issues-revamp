@@ -20,9 +20,7 @@
   opacity: 1;
 }
 
-@media (prefers-color-scheme: dark) {
-  .selected:disabled {
-    --selected-text-color: rgba(255, 255, 255, 0.5);
-    --selected-border-color: rgba(255, 255, 255, 0.5);
-  }
+:global(html[data-theme="dark"]) .selected:disabled {
+  --selected-text-color: rgba(255, 255, 255, 0.5);
+  --selected-border-color: rgba(255, 255, 255, 0.5);
 }

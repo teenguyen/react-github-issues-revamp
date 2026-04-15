@@ -47,9 +47,7 @@
   color: var(--text-color);
 }
 
-@media (prefers-color-scheme: dark) {
-  /* an option background colour cannot have an alpha channel, so it's manually set here */
-  .select option {
-    background-color: #0f172a; /* --button-background */
-  }
+/* an option background colour cannot have an alpha channel, so it's manually set here */
+:global(html[data-theme="dark"]) .select option {
+  background-color: #0f172a;
 }

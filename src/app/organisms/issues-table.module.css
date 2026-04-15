@@ -13,10 +13,8 @@
   overflow: hidden;
 }
 
-@media (prefers-color-scheme: dark) {
-  .tableWrap {
-    border-color: rgba(255, 255, 255, 0.1);
-  }
+:global(html[data-theme="dark"]) .tableWrap {
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 .table {
@@ -35,11 +33,9 @@
   vertical-align: top;
 }
 
-@media (prefers-color-scheme: dark) {
-  .table th,
-  .table td {
-    border-bottom-color: rgba(255, 255, 255, 0.06);
-  }
+:global(html[data-theme="dark"]) .table th,
+:global(html[data-theme="dark"]) .table td {
+  border-bottom-color: rgba(255, 255, 255, 0.06);
 }
 
 .table th {
