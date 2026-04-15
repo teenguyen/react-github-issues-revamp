@@ -4,7 +4,7 @@ import { type CSSProperties } from "react";
 import clsx from "clsx";
 import { MessageSquare } from "react-feather";
 import { Issue } from "@/queries/issues";
-import tableStyles from "./issues-table.module.css";
+import tableStyles from "../organisms/issues-table.module.css";
 import rowStyles from "./issues-row.module.css";
 
 function labelStyle(color: string, isDark: boolean): CSSProperties {

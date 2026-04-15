@@ -1,5 +1,3 @@
-"use client";
-
 import clsx from "clsx";
 import styles from "./pagination.module.css";
 

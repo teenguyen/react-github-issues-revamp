@@ -24,7 +24,7 @@ export function Dropdown({
       <div className={styles.selectWrapper}>
         <select
           id={id}
-          className={styles.select}
+          className={clsx(styles.select, className)}
           aria-label={ariaLabel ?? label}
           {...props}
         >

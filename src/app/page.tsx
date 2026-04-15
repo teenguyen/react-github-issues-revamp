@@ -2,16 +2,22 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useQueries, useQuery } from "@tanstack/react-query";
-import Summary from "./components/summary";
-import IssuesTable from "./components/issues-table";
+import Summary from "./organisms/summary";
+import IssuesTable from "./organisms/issues-table";
+import IssuesFilter, {
+  DEFAULT_LABEL,
+  ISSUE_SORT_BY,
+  ISSUE_SORT_DIRECTION,
+  type IssueSortBy,
+  type IssueSortDirection,
+} from "./organisms/issues-filter";
 import styles from "./page.module.css";
 import { summaryQueryOptions } from "@/queries/summary";
 import { labelsQueryOptions } from "@/queries/labels";
-import Dropdown from "./atoms/dropdown";
 import { ISSUES_PAGE_SIZE, issuesQueryOptions } from "@/queries/issues";
 import Pagination from "./components/pagination";
 
-const DEFAULT_LABEL = "";
+const ISSUES_STATE = "open";
 
 export default function Home() {
   const {
@@ -24,9 +30,16 @@ export default function Home() {
   const { full_name, issues_url, open_issues_count } = summary ?? {};
 
   const [labelFilter, setLabelFilter] = useState(DEFAULT_LABEL);
+  const [issueSortBy, setIssueSortBy] = useState<IssueSortBy>(
+    ISSUE_SORT_BY.CREATED,
+  );
+  const [issueSortDirection, setIssueSortDirection] =
+    useState<IssueSortDirection>(ISSUE_SORT_DIRECTION.DESC);
   const [page, setPage] = useState(1);
 
-  useEffect(() => setPage(1), [labelFilter]);
+  useEffect(() => {
+    setPage(1);
+  }, [labelFilter, issueSortBy, issueSortDirection]);
 
   const issuesUrl = issues_url?.replace(/\{\/number\}$/, "");
   const issuesFetchUrl = useMemo(() => {
@@ -34,14 +47,16 @@ export default function Home() {
     const u = new URL(issuesUrl);
     u.searchParams.set("per_page", String(ISSUES_PAGE_SIZE));
     u.searchParams.set("page", String(page));
-    u.searchParams.set("state", "open");
+    u.searchParams.set("state", ISSUES_STATE);
+    u.searchParams.set("sort", issueSortBy);
+    u.searchParams.set("direction", issueSortDirection);
     if (labelFilter) {
       u.searchParams.set("labels", labelFilter);
     } else {
       u.searchParams.delete("labels");
     }
     return u.toString();
-  }, [issuesUrl, page, labelFilter]);
+  }, [issuesUrl, page, labelFilter, issueSortBy, issueSortDirection]);
 
   const [{ data, isPending, isError, isFetching }, { data: labels = [] }] =
     useQueries({
@@ -68,22 +83,16 @@ export default function Home() {
           isFetching: summaryIsFetching,
         }}
       />
-      <div className={styles.filters}>
-        <Dropdown
-          id="issues-label-filter"
-          label="Filter by label"
-          value={labelFilter}
-          onChange={(e) => setLabelFilter(e.target.value)}
-          disabled={!full_name}
-        >
-          <option value={DEFAULT_LABEL}>All labels</option>
-          {labels.map((label) => (
-            <option key={label.name} value={label.name}>
-              {label.name}
-            </option>
-          ))}
-        </Dropdown>
-      </div>
+      <IssuesFilter
+        labels={labels}
+        repoReady={Boolean(full_name)}
+        labelFilter={labelFilter}
+        onLabelFilterChange={setLabelFilter}
+        issueSortBy={issueSortBy}
+        onIssueSortByChange={setIssueSortBy}
+        issueSortDirection={issueSortDirection}
+        onIssueSortDirectionChange={setIssueSortDirection}
+      />
       <IssuesTable
         issues={issues}
         queryState={{

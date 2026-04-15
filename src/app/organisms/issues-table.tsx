@@ -3,7 +3,7 @@
 import { type Issue } from "@/queries/issues";
 import Skeleton from "../atoms/skeleton";
 import styles from "./issues-table.module.css";
-import IssuesRow from "./issues-row";
+import IssuesRow from "../components/issues-row";
 
 export default function IssuesTable({
   issues,
