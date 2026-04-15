@@ -4,7 +4,6 @@ html[data-theme="light"] {
   --color-scheme: light;
   --title-color: rgba(15, 23, 42, 0.85);
   --text-color: rgba(15, 23, 42, 0.75);
-  --page-background: url("/light.jpeg");
   --selection-color: rgba(59, 130, 246, 0.25);
   --button-background-color: rgba(15, 23, 42, 0.04);
   --button-border-color: rgba(15, 23, 42, 0.15);
@@ -16,7 +15,6 @@ html[data-theme="dark"] {
   --color-scheme: dark;
   --title-color: rgba(248, 250, 252, 0.85);
   --text-color: rgba(248, 250, 252, 0.75);
-  --page-background: url("/dark.jpeg");
   --selection-color: rgba(255, 255, 255, 0.2);
   --button-background-color: rgba(255, 255, 255, 0.08);
   --button-border-color: rgba(255, 255, 255, 0.12);
@@ -28,25 +26,64 @@ html {
 }
 
 body {
-  background-attachment: fixed;
   background-color: #f8fafc;
-  background-image: var(--page-background);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
   color: var(--text-color);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-family: var(--font-inter);
+  isolation: isolate;
   margin: 10vh 10vw;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
+  position: relative;
+  transition: background-color 0.85s ease;
+}
+
+/* Crossfade photos: opacity transitions; background-image does not interpolate. */
+body::before,
+body::after {
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: fixed;
+  transition: opacity 0.85s ease;
+  z-index: -1;
+}
+
+body::before {
+  background-image: url("/light.jpeg");
+  opacity: 1;
+}
+
+body::after {
+  background-image: url("/dark.jpeg");
+  opacity: 0;
+}
+
+html[data-theme="dark"] body::before {
+  opacity: 0;
+}
+
+html[data-theme="dark"] body::after {
+  opacity: 1;
 }
 
 html[data-theme="dark"] body {
   background-color: #0f172a;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body,
+  body::before,
+  body::after {
+    transition-duration: 0.01ms;
+  }
 }
 
 body::selection {
