@@ -1,0 +1,26 @@
+.loadingOverlay {
+  align-items: center;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  position: fixed;
+  z-index: 250;
+}
+
+.spinner {
+  animation: themeLoadingSpin 0.65s linear infinite;
+  border: 2px solid rgba(255, 255, 255, 0.22);
+  border-radius: 50%;
+  border-top-color: rgba(255, 255, 255, 0.92);
+  height: 2rem;
+  width: 2rem;
+}
+
+@keyframes themeLoadingSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}

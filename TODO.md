@@ -1,6 +1,0 @@
-- reduce pagination down to singular object so that state can be implemented
-- convert to static getDerivedStateFromProps
-- add proper colour contrast for labels: 
-  - https://stackoverflow.com/questions/3942878/how-to-decide-font-color-in-white-or-black-depending-on-background-color?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
-  - https://codepen.io/znak/pen/aOvMOd
-- implement redux!

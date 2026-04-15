@@ -1,0 +1,98 @@
+.heading {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  margin: 0 0 0.75rem;
+  opacity: 0.85;
+  text-transform: uppercase;
+}
+
+.tableWrap {
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+:global(html[data-theme="dark"]) .tableWrap {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.table {
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.875rem;
+  line-height: 1.35;
+  width: 100%;
+}
+
+.table th,
+.table td {
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  padding: 0.55rem 0.65rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+:global(html[data-theme="dark"]) .table th,
+:global(html[data-theme="dark"]) .table td {
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+
+.table th {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  position: sticky;
+  text-transform: uppercase;
+  top: 0;
+  z-index: 1;
+}
+
+.table tbody tr:last-child td,
+.table tbody tr:last-child th {
+  border-bottom: none;
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  width: 2.5rem;
+}
+
+.titleCell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.titleCell a {
+  color: inherit;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.titleCell a:hover {
+  text-decoration: underline;
+}
+
+.labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.comments {
+  width: 2rem;
+  vertical-align: middle;
+}
+
+.tableMessage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 10rem;
+}
