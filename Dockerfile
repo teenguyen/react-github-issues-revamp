@@ -1,21 +1,15 @@
-# Use Node
 FROM node:20-alpine
 
-# Set working directory
 WORKDIR /app
 
-# Copy only package files first (for caching installs)
-COPY package*.json ./
-COPY yarn.lock* ./
+# Ship pnpm via Corepack (not in PATH on the base image until enabled).
+RUN corepack enable && corepack prepare pnpm@9 --activate
 
-# Install dependencies
-RUN yarn install
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
 
-# Copy the rest of the app
 COPY . .
 
-# Expose port
 EXPOSE 3000
 
-# Start dev server
-CMD ["yarn", "run", "ndev", "--hostname", "0.0.0.0"]
+CMD ["pnpm", "run", "dev", "--", ".", "--webpack", "--hostname", "0.0.0.0"]

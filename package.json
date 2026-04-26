@@ -3,11 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "docker compose up --watch",
-    "build": "docker compose up --build",
-    "ndev": "next dev",
-    "nbuild": "next build",
-    "nstart": "next start"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.91.0",

@@ -17,6 +17,7 @@ yarn build
 This runs `docker compose up --build`, which builds the image and starts the container.
 
 Once running, open [http://localhost:3000](http://localhost:3000) in your browser.
+You can temporarily override this by setting `APP_PORT` before starting Docker Compose.
 
 ## Development
 
@@ -27,6 +28,12 @@ yarn start
 ```
 
 This runs `docker compose up --watch`, which syncs file changes into the container automatically. Changing `package.json` triggers a full rebuild.
+
+To use a different host port:
+
+```bash
+APP_PORT=3002 docker compose up --watch
+```
 
 ## Scripts
 

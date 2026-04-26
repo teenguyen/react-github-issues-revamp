@@ -2,15 +2,7 @@ services:
   app:
     build: .
     ports:
-      - "3000:3000"
-    # Only sync package.json and lockfile as volume
-    volumes:
-      - ./package.json:/app/package.json
-      - ./yarn.lock:/app/yarn.lock
-      - /app/node_modules
-    environment:
-      - NODE_ENV=development
-    # Docker Compose v2.16+ develop/watch for hot reload
+      - "${APP_PORT:-3000}:3000"
     develop:
       watch:
         - action: sync
@@ -19,5 +11,8 @@ services:
           ignore:
             - node_modules/
             - .next/
+            - .git/
         - action: rebuild
           path: package.json
+        - action: rebuild
+          path: pnpm-lock.yaml
